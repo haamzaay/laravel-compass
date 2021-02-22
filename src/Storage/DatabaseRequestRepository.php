@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Davidhsianturi\Compass\Compass;
 use Davidhsianturi\Compass\RouteResult;
 use Davidhsianturi\Compass\Contracts\RequestRepository;
+use Illuminate\Support\Facades\Auth;
 
 class DatabaseRequestRepository implements RequestRepository
 {
@@ -108,11 +109,11 @@ class DatabaseRequestRepository implements RequestRepository
             $route['description'],
             $route['content'],
             [
-                'domain' => $route['domain'],
-                'methods' => $route['methods'],
-                'uri' => $route['uri'],
-                'name' => $route['name'],
-                'action' => $route['action'],
+                'domain' => isset($route['domain']) ? $route['domain'] : '',
+                'methods' => isset($route['methods']) ? $route['methods'] : '',
+                'uri' => isset($route['uri']) ? $route['uri'] : '',
+                'name' => isset($route['name']) ? $route['name'] : '',
+                'action' => isset($route['action']) ? $route['action'] : '',
             ],
             Carbon::parse($route['created_at']),
             Carbon::parse($route['updated_at']),
@@ -130,6 +131,8 @@ class DatabaseRequestRepository implements RequestRepository
     {
         return RouteModel::on($this->connection)
             ->whereExample(false)
+            ->join('user_routes_composite', 'compass_routeables.uuid', '=', 'user_routes_composite.route_id')
+            ->where('user_routes_composite.user_id', '=', \Auth::user()->id)
             ->get()
             ->toArray();
     }

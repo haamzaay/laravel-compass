@@ -87,14 +87,18 @@ class Compass
      */
     public static function syncRoute(array $routeInStorage)
     {
-        return static::getAppRoutes()->map(function ($appRoute) use ($routeInStorage) {
-            $route = collect($routeInStorage)
-                ->where('route_hash', $appRoute['route_hash'])
-                ->collapse()
-                ->toArray();
+        if(config('compass.routes.app_routes')) {
+            return static::getAppRoutes()->map(function ($appRoute) use ($routeInStorage) {
+                $route = collect($routeInStorage)
+                    ->where('route_hash', $appRoute['route_hash'])
+                    ->collapse()
+                    ->toArray();
 
-            return array_merge($appRoute, $route);
-        })->values();
+                return array_merge($appRoute, $route);
+            })->values();
+        } else {
+            return collect($routeInStorage);
+        }
     }
 
     /**

@@ -43,6 +43,8 @@ return [
         ],
 
         'base_uri' => '*',
+
+        'app_routes' => false,
     ],
 
     /*
@@ -80,6 +82,7 @@ return [
         'enabled' => false,
         'guard' => 'api',
         'identifier' => 'email',
+        'middleware' => 'web',
     ],
 
     /*
