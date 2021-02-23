@@ -103,7 +103,7 @@ class RouteResult implements JsonSerializable
         $this->id = $id;
         $this->storageId = $storageId;
         $this->title = $title;
-        $collection => $collection;
+        $this->collection = $collection;
         $this->description = $description;
         $this->content = $content;
         $this->info = $info;
