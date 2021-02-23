@@ -27,9 +27,11 @@
 @endif
 
 ### HTTP Request
+@if(!empty($route->info['methods']))
 @foreach ($route->info['methods'] as $method)
 `{{$method}} {{$route->info['uri']}}`
 @endforeach
+@endif
 
 @if (array_key_exists('params', $route->content))
 @foreach ($route->content['params'] as $param)

@@ -43,7 +43,7 @@ class DocumentarianProvider implements DocumenterRepository
         $settings = $this->markdownConfig();
 
         // Build routes output.
-        $routesOutput = Compass::getAppRoutes()->map(function ($route) use ($settings, $contents) {
+        $routesOutput = $this->resources->routesInStorageCollect()->map(function ($route) use ($settings, $contents) {
             $route = $this->resources->find($route['route_hash']);
 
             collect($route->examples)->each(function ($example) {

@@ -129,12 +129,32 @@ class DatabaseRequestRepository implements RequestRepository
      */
     protected function routesInStorage()
     {
-        return RouteModel::on($this->connection)
+        if(\App::runningInConsole() || \Auth::user()->isAdmin()){
+            return RouteModel::on($this->connection)
+                ->whereExample(false)
+                ->get()
+                ->toArray();
+        } else {
+            return RouteModel::on($this->connection)
+                ->whereExample(false)
+                ->join('user_routes_composite', 'compass_routeables.uuid', '=', 'user_routes_composite.route_id')
+                ->where('user_routes_composite.user_id', '=', \Auth::user()->id)
+                ->get()
+                ->toArray();
+        }
+    }
+
+    /**
+     * Get routes from storage.
+     *
+     * @return array
+     */
+    public function routesInStorageCollect()
+    {
+        return collect(RouteModel::on($this->connection)
             ->whereExample(false)
-            ->join('user_routes_composite', 'compass_routeables.uuid', '=', 'user_routes_composite.route_id')
-            ->where('user_routes_composite.user_id', '=', \Auth::user()->id)
             ->get()
-            ->toArray();
+            ->toArray());
     }
 
     /**
