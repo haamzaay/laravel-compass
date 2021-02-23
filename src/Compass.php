@@ -111,13 +111,15 @@ class Compass
     {
         $baseUri = config('compass.routes.base_uri');
 
-        return $routes->groupBy(function ($route) use ($baseUri) {
+        /*return $routes->groupBy(function ($route) use ($baseUri) {
             if (is_object($route)) {
                 return strtok(Str::after($route->info['uri'], $baseUri), '/');
             }
 
             return strtok(Str::after($route['uri'], $baseUri), '/');
-        });
+        });*/
+
+        return $routes->groupBy('collection');
     }
 
     /**

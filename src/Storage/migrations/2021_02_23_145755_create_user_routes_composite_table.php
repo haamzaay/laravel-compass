@@ -17,7 +17,7 @@ class CreateUserRoutesCompositeTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
 
-            $table->uuid('route_id');
+            $table->unsignedBigInteger('collection_id');
             $table->boolean('shared')->default(0);
             $table->string('shared_by')->nullable();
             $table->timestamps();
@@ -25,7 +25,7 @@ class CreateUserRoutesCompositeTable extends Migration
 
         Schema::table('user_routes_composite', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('route_id')->references('uuid')->on('compass_routeables');
+            $table->foreign('collection_id')->references('id')->on('routeable_collections');
         });
     }
 

@@ -106,6 +106,7 @@ class DatabaseRequestRepository implements RequestRepository
             $route['route_hash'],
             $route['uuid'],
             $route['title'],
+            $route['name'],
             $route['description'],
             $route['content'],
             [
@@ -131,13 +132,22 @@ class DatabaseRequestRepository implements RequestRepository
     {
         if(\App::runningInConsole() || \Auth::user()->isAdmin()){
             return RouteModel::on($this->connection)
+                ->select(
+                          'compass_routeables.*',
+                          'routeable_collections.*'
+                          )
+                ->join('collections_composite', 'compass_routeables.uuid', '=', 'collections_composite.route_id')
+                ->join('user_routes_composite', 'collections_composite.collection_id', '=', 'user_routes_composite.collection_id')
+                ->join('routeable_collections', 'collections_composite.collection_id', '=', 'routeable_collections.id')
                 ->whereExample(false)
                 ->get()
                 ->toArray();
         } else {
             return RouteModel::on($this->connection)
                 ->whereExample(false)
-                ->join('user_routes_composite', 'compass_routeables.uuid', '=', 'user_routes_composite.route_id')
+                ->join('collections_composite', 'compass_routeables.uuid', '=', 'collections_composite.route_id')
+                ->join('user_routes_composite', 'collections_composite.collection_id', '=', 'user_routes_composite.collection_id')
+                ->join('routeable_collections', 'collections_composite.collection_id', '=', 'routeable_collections.id')
                 ->where('user_routes_composite.user_id', '=', \Auth::user()->id)
                 ->get()
                 ->toArray();

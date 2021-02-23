@@ -28,6 +28,13 @@ class RouteResult implements JsonSerializable
     public $title;
 
     /**
+     * The routeables collection name.
+     *
+     * @var string|null
+     */
+    public $collection;
+
+    /**
      * The routeables description.
      *
      * @var string|null
@@ -82,6 +89,7 @@ class RouteResult implements JsonSerializable
      * @param  string  $id
      * @param  mixed  $storageId
      * @param  string|null  $title
+     * @param  string|null  $collection
      * @param  string|null  $description
      * @param  array|null  $content
      * @param  array  $info
@@ -90,11 +98,12 @@ class RouteResult implements JsonSerializable
      * @param  bool  $isExample
      * @param  array  $examples
      */
-    public function __construct(string $id, $storageId, ?string $title, ?string $description, ?array $content, array $info, $createdAt, $updatedAt, $isExample, $examples = [])
+    public function __construct(string $id, $storageId, ?string $title, ?string $collection, ?string $description, ?array $content, array $info, $createdAt, $updatedAt, $isExample, $examples = [])
     {
         $this->id = $id;
         $this->storageId = $storageId;
         $this->title = $title;
+        $collection => $collection;
         $this->description = $description;
         $this->content = $content;
         $this->info = $info;
@@ -115,6 +124,7 @@ class RouteResult implements JsonSerializable
             'id' => $this->id,
             'storageId' => $this->storageId,
             'title' => $this->title,
+            'collection' => $this->collection,
             'description' => $this->description,
             'content' => $this->content,
             'info' => $this->info,
