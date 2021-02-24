@@ -35,7 +35,7 @@
 
 @if (array_key_exists('params', $route->content))
 @foreach ($route->content['params'] as $param)
-@if ($param['included'])
+@if (isset($param['included']))
 #### Query Parameters
 
 Key | Description
