@@ -106,7 +106,7 @@ class DatabaseRequestRepository implements RequestRepository
             $route['route_hash'],
             $route['uuid'],
             $route['title'],
-            $route['name'],
+            isset($route['name']) ? $route['name'] : null,
             $route['description'],
             $route['content'],
             [
