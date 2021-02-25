@@ -15,7 +15,7 @@ class CreateRouteableCollectionsTable extends Migration
     {
         Schema::create('routeable_collections', function (Blueprint $table) {
             $table->id();
-            $table->name();
+            $table->string('name');
             $table->timestamps();
         });
     }
