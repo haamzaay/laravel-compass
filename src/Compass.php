@@ -69,7 +69,7 @@ class Compass
     {
         $methods = [$route['content']['selectedMethod']];
         $baseUri = config('compass.routes.base_uri');
-
+        $methods = array_unique(array_merge($methods, ['GET', 'POST', 'PUT', 'DELETE', 'PATCH']));
         return static::filterRoute([
             'uuid' => $route['uuid'],
             'title' => $route['title'],
