@@ -60,6 +60,34 @@ class Compass
     }
 
     /**
+     * Get the DataBase route information for a given route.
+     *
+     * @param  array  $route
+     * @return array
+     */
+    protected static function getDBRouteInformation($route)
+    {
+        $methods = [$route['content']['selectedMethod']];
+        $baseUri = config('compass.routes.base_uri');
+
+        return static::filterRoute([
+            'uuid' => $route['uuid'],
+            'title' => $route['title'],
+            'description' => $route['description'],
+            'content' => $route['content'],
+            'example' => false,
+            'route_hash' => $route['route_hash'],
+            'domain' => parse_url($route['content']['url'], PHP_URL_HOST),
+            'methods' => $methods,
+            'uri' => parse_url($route['content']['url'], PHP_URL_PATH),
+            'name' => $route['name'],
+            'action' => parse_url($route['content']['url'], PHP_URL_PATH),
+            'created_at' => $route['created_at'],
+            'updated_at' => $route['updated_at'],
+        ]);
+    }
+
+    /**
      * Filter the route by the config rules.
      *
      * @param  array  $route
@@ -97,7 +125,9 @@ class Compass
                 return array_merge($appRoute, $route);
             })->values();
         } else {
-            return collect($routeInStorage);
+            return collect($routeInStorage)->map(function ($route) {
+                return static::getDBRouteInformation($route);
+            })->filter();
         }
     }
 
