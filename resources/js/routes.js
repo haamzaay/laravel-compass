@@ -9,6 +9,11 @@ export default [
         component: require('./pages/cortex').default,
     },
     {
+        path: '/group/:title',
+        name: 'group',
+        component: require('./pages/welcome').default,
+    },
+    {
         path: '/eg/:id',
         name: 'example',
         component: require('./pages/example').default,

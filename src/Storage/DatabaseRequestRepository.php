@@ -137,7 +137,6 @@ class DatabaseRequestRepository implements RequestRepository
                           'routeable_collections.*'
                           )
                 ->join('collections_composite', 'compass_routeables.uuid', '=', 'collections_composite.route_id')
-                ->join('user_routes_composite', 'collections_composite.collection_id', '=', 'user_routes_composite.collection_id')
                 ->join('routeable_collections', 'collections_composite.collection_id', '=', 'routeable_collections.id')
                 ->whereExample(false)
                 ->get()
@@ -146,7 +145,6 @@ class DatabaseRequestRepository implements RequestRepository
             return RouteModel::on($this->connection)
                 ->whereExample(false)
                 ->join('collections_composite', 'compass_routeables.uuid', '=', 'collections_composite.route_id')
-                ->join('user_routes_composite', 'collections_composite.collection_id', '=', 'user_routes_composite.collection_id')
                 ->join('routeable_collections', 'collections_composite.collection_id', '=', 'routeable_collections.id')
                 ->where('user_routes_composite.user_id', '=', \Auth::user()->id)
                 ->get()

@@ -13,10 +13,12 @@ export default {
             ready: false,
             isOpen: false,
             currentTab: 'list',
+            isGroup: false,
         }
     },
 
     mounted() {
+        this.loadGroup();
         this.loadRequests();
         this.spotlightWithKey();
     },
@@ -44,6 +46,14 @@ export default {
                 if (e.ctrlKey && e.code == 'Space') {
                     e.preventDefault();
                     this.openSpotlight();
+                }
+            }
+        },
+        loadGroup() {
+            if(this.$route.name == 'group') {
+                this.currentTab = 'group';
+                if(this.$route.params.title != ''){
+                    this.isGroup = this.$route.params.title;
                 }
             }
         }
@@ -94,11 +104,12 @@ export default {
                         </li>
                     </ul>
                     <template v-if="currentTab=='group'">
-                        <details class="sm:mb-1 cursor-pointer" v-for="(resources, name) in requests.group" :key="name">
+                        <details class="sm:mb-1 cursor-pointer" v-for="(resources, name) in requests.group" :key="name" :open="isGroup == name ? true : false">
                             <summary class="py-1 text-sm text-gray-600 font-semibold capitalize hover:text-primary focus:text-primary focus:outline-none">
                                 {{name}}
                             </summary>
                             <ul class="ml-4">
+                                <li><a :href="'/collection/'+name+'/wiki'">Collection Wiki</a></li>
                                 <li class="sm:mb-1 truncate" v-for="request in resources" :key="request.id">
                                     <router-link :to="{name:'cortex', params:{id: request.id}}" active-class="text-primary" class="text-sm text-gray-600 hover:text-primary">
                                         <http-methods :request="request" />
