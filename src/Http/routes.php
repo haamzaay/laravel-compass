@@ -2,8 +2,9 @@
 
 // Route request.
 Route::middleware(config('compass.authenticator.middleware'))->get('/request', 'RequestController@index')->name('request');
-Route::middleware(config('compass.authenticator.middleware'))->post('/request', 'RequestController@store')->name('request.store');
+Route::middleware(config('compass.authenticator.middleware'))->post('/request/{name?}', 'RequestController@store')->name('request.store');
 Route::middleware(config('compass.authenticator.middleware'))->get('/request/{id}', 'RequestController@show')->name('request.show');
+Route::middleware(config('compass.authenticator.middleware'))->get('/request/add/{id}', 'RequestController@showEmpty')->name('request.show.empty');
 
 // Route response.
 Route::middleware(config('compass.authenticator.middleware'))->post('/response', 'ResponseController@store')->name('response.store');

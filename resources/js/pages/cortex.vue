@@ -75,14 +75,25 @@ export default {
     methods: {
         getRequest() {
             this.requestReady = false;
-            this.$http
-                .get('/' + Compass.path + '/request/' + this.id)
-                .then(response => {
-                    this.fillRequest(response.data);
-                    this.requestReady = true;
-                }).catch(error => {
+            if(this.$route.name == 'add') {
+                this.$http
+                    .get('/' + Compass.path + '/request/add/' + this.id)
+                    .then(response => {
+                        this.fillRequest(response.data);
+                        this.requestReady = true;
+                    }).catch(error => {
                     this.responseErrors = error.response;
                 });
+            } else {
+                this.$http
+                    .get('/' + Compass.path + '/request/' + this.id)
+                    .then(response => {
+                        this.fillRequest(response.data);
+                        this.requestReady = true;
+                    }).catch(error => {
+                    this.responseErrors = error.response;
+                });
+            }
         },
         fillRequest(data) {
             this.requestData.id = data.id;
@@ -103,13 +114,17 @@ export default {
             this.requestData.content.selectedMethod = data.content.selectedMethod || data.info.methods[0];
         },
         saveRequest()  {
+            let path = '/' + Compass.path + '/request';
+            if(this.$route.name == 'add') {
+                path = '/' + Compass.path + '/request/'+this.id;
+            }
             this.$http
-                .post('/' + Compass.path + '/request', this.requestData)
+                .post(path, this.requestData)
                 .then(response => {
                     this.alertSuccess('Request data successfully saved!', 3000);
                 }).catch(error => {
-                    this.requestErrors = error.response
-                });
+                this.requestErrors = error.response
+            });
         },
         sendRequest() {
             this.responseReady = false;

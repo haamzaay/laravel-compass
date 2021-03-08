@@ -109,7 +109,10 @@ export default {
                                 {{name}}
                             </summary>
                             <ul class="ml-4">
-                                <li><a :href="'/collection/'+name+'/wiki'">Collection Wiki</a></li>
+                                <li>
+                                    <a class="text-xs" :href="'/collection/'+name+'/wiki'">Collection Wiki</a> |
+                                    <a class="text-xs" :href="'/compass/add/'+name">Add Endpoint</a>
+                                </li>
                                 <li class="sm:mb-1 truncate" v-for="request in resources" :key="request.id">
                                     <router-link :to="{name:'cortex', params:{id: request.id}}" active-class="text-primary" class="text-sm text-gray-600 hover:text-primary">
                                         <http-methods :request="request" />

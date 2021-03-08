@@ -64,12 +64,43 @@ class DatabaseRequestRepository implements RequestRepository
     }
 
     /**
+     * find the route with the given ID.
+     *
+     * @param  string  $id
+     * @return \Davidhsianturi\Compass\RouteResult
+     */
+    public function findEmpty(string $id): RouteResult
+    {
+        $uuid = (string) Str::uuid();
+        $methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'];
+        return new RouteResult(
+            md5($uuid.':'.implode($methods)),
+            $uuid,
+            '',
+            $id,
+            null,
+            [],
+            [
+                'domain' => '',
+                'methods' => $methods,
+                'uri' => '',
+                'name' => '',
+                'action' => '',
+            ],
+            Carbon::now(),
+            Carbon::now(),
+            false,
+            ''
+        );
+    }
+
+    /**
      * Update or create the given route.
      *
      * @param  array  $route
      * @return \Davidhsianturi\Compass\RouteResult
      */
-    public function save(array $route)
+    public function save(array $route, $collection = false)
     {
         $storageId = $route['storageId'] ?? (string) Str::uuid();
 
@@ -81,6 +112,14 @@ class DatabaseRequestRepository implements RequestRepository
                 'content' => $route['content'],
             ]
         );
+
+        if($collection) {
+            $collection = RouteCollectionModel::where('name', $collection)->first();
+            $collectionComposite = new CollectionCompositeModel();
+            $collectionComposite->collection_id = $collection->id;
+            $collectionComposite->route_id = $storageId;
+            $collectionComposite->save();
+        }
 
         $syncedRoute = Compass::syncRoute($store->get()->toArray())
             ->whereStrict('uuid', $store->uuid)

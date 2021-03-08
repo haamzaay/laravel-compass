@@ -80,7 +80,7 @@ class Compass
             'domain' => parse_url($route['content']['url'], PHP_URL_HOST),
             'methods' => $methods,
             'uri' => parse_url($route['content']['url'], PHP_URL_PATH),
-            'name' => $route['name'],
+            'name' => $route['name'] ?? $route['title'],
             'action' => parse_url($route['content']['url'], PHP_URL_PATH),
             'created_at' => $route['created_at'],
             'updated_at' => $route['updated_at'],

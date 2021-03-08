@@ -53,13 +53,24 @@ class RequestController
     }
 
     /**
+     * Get route request with the given ID.
+     *
+     * @param  string  $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function showEmpty($id)
+    {
+        return response()->json($this->request->findEmpty($id));
+    }
+
+    /**
      * Store the route request.
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store()
+    public function store($name = false)
     {
-        return response()->json($this->request->save($this->validateRequest()));
+        return response()->json($this->request->save($this->validateRequest(), $name));
     }
 
     /**
