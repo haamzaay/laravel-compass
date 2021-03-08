@@ -1596,7 +1596,11 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
       this.$http.post(path, this.requestData).then(function (response) {
         _this2.alertSuccess('Request data successfully saved!', 3000);
       })["catch"](function (error) {
-        _this2.requestErrors = error.response;
+        var errorKey = Object.keys(error.response.data.errors)[0];
+
+        _this2.alertError(error.response.data.errors[errorKey][0]);
+
+        _this2.requestErrors = error.response.data.message;
       });
     },
     sendRequest: function sendRequest() {

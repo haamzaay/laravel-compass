@@ -123,7 +123,9 @@ export default {
                 .then(response => {
                     this.alertSuccess('Request data successfully saved!', 3000);
                 }).catch(error => {
-                this.requestErrors = error.response
+                    let errorKey = Object.keys(error.response.data.errors)[0];
+                    this.alertError(error.response.data.errors[errorKey][0]);
+                    this.requestErrors = error.response.data.message;
             });
         },
         sendRequest() {
