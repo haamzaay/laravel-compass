@@ -1547,13 +1547,24 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
       var _this = this;
 
       this.requestReady = false;
-      this.$http.get('/' + Compass.path + '/request/' + this.id).then(function (response) {
-        _this.fillRequest(response.data);
 
-        _this.requestReady = true;
-      })["catch"](function (error) {
-        _this.responseErrors = error.response;
-      });
+      if (this.$route.name == 'add') {
+        this.$http.get('/' + Compass.path + '/request/add/' + this.id).then(function (response) {
+          _this.fillRequest(response.data);
+
+          _this.requestReady = true;
+        })["catch"](function (error) {
+          _this.responseErrors = error.response;
+        });
+      } else {
+        this.$http.get('/' + Compass.path + '/request/' + this.id).then(function (response) {
+          _this.fillRequest(response.data);
+
+          _this.requestReady = true;
+        })["catch"](function (error) {
+          _this.responseErrors = error.response;
+        });
+      }
     },
     fillRequest: function fillRequest(data) {
       this.requestData.id = data.id;
@@ -1576,7 +1587,13 @@ function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) r
     saveRequest: function saveRequest() {
       var _this2 = this;
 
-      this.$http.post('/' + Compass.path + '/request', this.requestData).then(function (response) {
+      var path = '/' + Compass.path + '/request';
+
+      if (this.$route.name == 'add') {
+        path = '/' + Compass.path + '/request/' + this.id;
+      }
+
+      this.$http.post(path, this.requestData).then(function (response) {
         _this2.alertSuccess('Request data successfully saved!', 3000);
       })["catch"](function (error) {
         _this2.requestErrors = error.response;
@@ -3523,11 +3540,23 @@ var render = function() {
                                   _c(
                                     "a",
                                     {
+                                      staticClass: "text-xs",
                                       attrs: {
                                         href: "/collection/" + name + "/wiki"
                                       }
                                     },
                                     [_vm._v("Collection Wiki")]
+                                  ),
+                                  _vm._v(
+                                    " |\n                                "
+                                  ),
+                                  _c(
+                                    "a",
+                                    {
+                                      staticClass: "text-xs",
+                                      attrs: { href: "/compass/add/" + name }
+                                    },
+                                    [_vm._v("Add Endpoint")]
                                   )
                                 ]),
                                 _vm._v(" "),
@@ -8115,6 +8144,10 @@ __webpack_require__.r(__webpack_exports__);
 }, {
   path: '/:id',
   name: 'cortex',
+  component: __webpack_require__(/*! ./pages/cortex */ "./resources/js/pages/cortex.vue")["default"]
+}, {
+  path: '/add/:id',
+  name: 'add',
   component: __webpack_require__(/*! ./pages/cortex */ "./resources/js/pages/cortex.vue")["default"]
 }, {
   path: '/group/:title',
