@@ -185,6 +185,7 @@ class DatabaseRequestRepository implements RequestRepository
                 ->whereExample(false)
                 ->join('collections_composite', 'compass_routeables.uuid', '=', 'collections_composite.route_id')
                 ->join('routeable_collections', 'collections_composite.collection_id', '=', 'routeable_collections.id')
+                ->join('user_routes_composite', 'routeable_collections.id', '=', 'user_routes_composite.collection_id')
                 ->where('user_routes_composite.user_id', '=', \Auth::user()->id)
                 ->get()
                 ->toArray();
