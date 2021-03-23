@@ -612,7 +612,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   computed: {
     ignoreAuth: function ignoreAuth() {
-      return Compass.app.env !== 'local';
+      return false; //Compass.app.env !== 'local';
     },
     tabs: function tabs() {
       var tabs = this.ignoreAuth ? ['Auth'].concat(_toConsumableArray(this.excludeTabs)) : this.excludeTabs;
