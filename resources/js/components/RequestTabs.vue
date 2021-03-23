@@ -40,7 +40,7 @@ export default {
 
     computed: {
         ignoreAuth() {
-            return Compass.app.env !== 'local';
+            return false; //Compass.app.env !== 'local';
         },
         tabs() {
             const tabs = this.ignoreAuth ? [...['Auth'], ...this.excludeTabs] : this.excludeTabs;
